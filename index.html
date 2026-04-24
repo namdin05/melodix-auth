@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Melodix – Verification Successful</title>
+  <style>
+    /* ── Reset & base ── */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html, body {
+      height: 100%;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+                   'Helvetica Neue', Arial, sans-serif;
+      background-color: #111318;
+      color: #e8eaf0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 24px;
+    }
+
+    /* ── Card ── */
+    .card {
+      background-color: #1c1f28;
+      border: 1px solid #2a2d38;
+      border-radius: 20px;
+      padding: 56px 48px;
+      max-width: 480px;
+      width: 100%;
+      text-align: center;
+      box-shadow: 0 8px 40px rgba(0, 0, 0, 0.55);
+    }
+
+    /* ── App brand ── */
+    .brand {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 40px;
+    }
+
+    .brand-icon {
+      width: 36px;
+      height: 36px;
+      flex-shrink: 0;
+    }
+
+    .brand-name {
+      font-size: 1.4rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      background: linear-gradient(135deg, #a78bfa, #7c3aed);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* ── Animated checkmark ── */
+    .checkmark-wrapper {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 32px;
+    }
+
+    .checkmark-circle {
+      width: 96px;
+      height: 96px;
+    }
+
+    /* Circle stroke draw-on animation */
+    .circle-path {
+      fill: none;
+      stroke: #7c3aed;
+      stroke-width: 3;
+      stroke-dasharray: 283;
+      stroke-dashoffset: 283;
+      stroke-linecap: round;
+      animation: drawCircle 0.7s ease-out 0.1s forwards;
+    }
+
+    /* Checkmark stroke draw-on animation */
+    .check-path {
+      fill: none;
+      stroke: #a78bfa;
+      stroke-width: 4;
+      stroke-dasharray: 60;
+      stroke-dashoffset: 60;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      animation: drawCheck 0.45s ease-out 0.75s forwards;
+    }
+
+    @keyframes drawCircle {
+      to { stroke-dashoffset: 0; }
+    }
+
+    @keyframes drawCheck {
+      to { stroke-dashoffset: 0; }
+    }
+
+    /* Glow pulse after both strokes finish */
+    .checkmark-circle {
+      animation: glow 2s ease-in-out 1.4s infinite alternate;
+      filter: drop-shadow(0 0 0px #7c3aed);
+    }
+
+    @keyframes glow {
+      from { filter: drop-shadow(0 0 4px #7c3aed66); }
+      to   { filter: drop-shadow(0 0 18px #7c3aed99); }
+    }
+
+    /* ── Typography ── */
+    .title {
+      font-size: 1.65rem;
+      font-weight: 700;
+      color: #f0f0f5;
+      letter-spacing: -0.01em;
+      margin-bottom: 16px;
+      opacity: 0;
+      transform: translateY(10px);
+      animation: fadeUp 0.5s ease-out 0.7s both;
+    }
+
+    .subtitle {
+      font-size: 0.95rem;
+      line-height: 1.65;
+      color: #8b8fa8;
+      opacity: 0;
+      transform: translateY(10px);
+      animation: fadeUp 0.5s ease-out 0.9s both;
+    }
+
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* ── Divider ── */
+    .divider {
+      width: 48px;
+      height: 3px;
+      border-radius: 2px;
+      background: linear-gradient(90deg, #7c3aed, #a78bfa);
+      margin: 28px auto;
+      opacity: 0;
+      animation: fadeUp 0.5s ease-out 1.1s both;
+    }
+
+    /* ── Footer note ── */
+    .footer-note {
+      font-size: 0.78rem;
+      color: #555870;
+      opacity: 0;
+      animation: fadeUp 0.5s ease-out 1.2s both;
+    }
+
+    /* ── Accessibility: respect reduced-motion preference ── */
+    @media (prefers-reduced-motion: reduce) {
+      .title,
+      .subtitle,
+      .divider,
+      .footer-note {
+        opacity: 1;
+        transform: none;
+        animation: none;
+      }
+
+      .circle-path {
+        stroke-dashoffset: 0;
+        animation: none;
+      }
+
+      .check-path {
+        stroke-dashoffset: 0;
+        animation: none;
+      }
+
+      .checkmark-circle {
+        animation: none;
+        filter: drop-shadow(0 0 8px #7c3aed88);
+      }
+    }
+
+    /* ── Mobile tweaks ── */
+    @media (max-width: 480px) {
+      .card {
+        padding: 40px 28px;
+        border-radius: 16px;
+      }
+
+      .title {
+        font-size: 1.4rem;
+      }
+
+      .checkmark-circle {
+        width: 80px;
+        height: 80px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="card" role="main">
+
+    <!-- App brand -->
+    <div class="brand" aria-label="Melodix">
+      <!-- Music note icon -->
+      <svg class="brand-icon" viewBox="0 0 36 36" fill="none" aria-hidden="true"
+           xmlns="http://www.w3.org/2000/svg">
+        <rect width="36" height="36" rx="10" fill="#2d1f5e"/>
+        <path d="M24 10v10.5A3.5 3.5 0 1 1 20.5 17H22V11l-8 2v11A3.5 3.5 0 1 1 10.5 21H12V10l12-3v3Z"
+              fill="#a78bfa"/>
+      </svg>
+      <span class="brand-name">Melodix</span>
+    </div>
+
+    <!-- Animated checkmark -->
+    <div class="checkmark-wrapper" aria-hidden="true">
+      <svg class="checkmark-circle" viewBox="0 0 100 100"
+           xmlns="http://www.w3.org/2000/svg">
+        <!-- Background circle (subtle) -->
+        <circle cx="50" cy="50" r="45" fill="#2d1f5e22"/>
+        <!-- Animated border circle -->
+        <circle class="circle-path" cx="50" cy="50" r="45"
+                transform="rotate(-90 50 50)"/>
+        <!-- Animated checkmark tick -->
+        <polyline class="check-path" points="28,52 43,67 72,35"/>
+      </svg>
+    </div>
+
+    <!-- Heading -->
+    <h1 class="title">Verification Successful!</h1>
+
+    <!-- Body text -->
+    <p class="subtitle">
+      Your email has been verified. You can now close this window
+      and return to the&nbsp;<strong style="color:#a78bfa;">Melodix</strong>&nbsp;app to log in.
+    </p>
+
+    <div class="divider" role="presentation"></div>
+
+    <p class="footer-note">© 2026 Melodix. All rights reserved.</p>
+  </main>
+</body>
+</html>
