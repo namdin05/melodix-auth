@@ -168,12 +168,32 @@
       animation: fadeUp 0.5s ease-out 1.2s both;
     }
 
+    /* ── Fallback Button (THÊM MỚI) ── */
+    .fallback-btn {
+      display: none; /* Ẩn mặc định, chỉ hiện khi JS gọi */
+      background-color: #1DB954;
+      color: #000000;
+      text-decoration: none;
+      font-weight: bold;
+      padding: 14px 32px;
+      border-radius: 30px;
+      margin-top: 24px;
+      font-size: 1rem;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+      animation: fadeUp 0.5s ease-out both;
+    }
+    .fallback-btn:hover {
+      background-color: #1ed760;
+      transform: scale(1.05);
+    }
+
     /* ── Accessibility: respect reduced-motion preference ── */
     @media (prefers-reduced-motion: reduce) {
       .title,
       .subtitle,
       .divider,
-      .footer-note {
+      .footer-note,
+      .fallback-btn {
         opacity: 1;
         transform: none;
         animation: none;
@@ -216,9 +236,7 @@
 <body>
   <main class="card" role="main">
 
-    <!-- App brand -->
     <div class="brand" aria-label="Melodix">
-      <!-- Music note icon -->
       <svg class="brand-icon" viewBox="0 0 36 36" fill="none" aria-hidden="true"
            xmlns="http://www.w3.org/2000/svg">
         <rect width="36" height="36" rx="10" fill="#158a3e"/>
@@ -228,32 +246,56 @@
       <span class="brand-name">Melodix</span>
     </div>
 
-    <!-- Animated checkmark -->
     <div class="checkmark-wrapper" aria-hidden="true">
       <svg class="checkmark-circle" viewBox="0 0 100 100"
            xmlns="http://www.w3.org/2000/svg">
-        <!-- Background circle (subtle) -->
         <circle cx="50" cy="50" r="45" fill="#1DB95422"/>
-        <!-- Animated border circle -->
         <circle class="circle-path" cx="50" cy="50" r="45"
                 transform="rotate(-90 50 50)"/>
-        <!-- Animated checkmark tick -->
         <polyline class="check-path" points="28,52 43,67 72,35"/>
       </svg>
     </div>
 
-    <!-- Heading -->
-    <h1 class="title">Verification Successful!</h1>
+    <h1 class="title" id="mainTitle">Verification Successful!</h1>
 
-    <!-- Body text -->
-    <p class="subtitle">
-      Your email has been verified. You can now close this window
-      and return to the&nbsp;<strong style="color:#1DB954;">Melodix</strong>&nbsp;app to log in.
+    <p class="subtitle" id="mainSubtitle">
+      Authenticating your session... Please wait a moment while we return you to the&nbsp;<strong style="color:#1DB954;">Melodix</strong>&nbsp;app.
     </p>
+
+    <a href="#" id="btnOpenApp" class="fallback-btn">Open Melodix App</a>
 
     <div class="divider" role="presentation"></div>
 
     <p class="footer-note">© 2026 Melodix. All rights reserved.</p>
   </main>
+
+  <script>
+    window.onload = function() {
+        // Lấy Hash (#) và Query (?) do Supabase trả về
+        var hash = window.location.hash; 
+        var search = window.location.search; 
+
+        if (hash || search) {
+            // Tạo link Custom Scheme dự phòng đá về app (khớp với Manifest của bạn)
+            var fallbackUrl = "melodix://auth" + search + hash;
+
+            // 1. NGAY LẬP TỨC cố gắng ép điện thoại mở app lên
+            window.location.href = fallbackUrl;
+
+            // 2. Chờ 2.5 giây. Nếu web chưa bị đóng (nghĩa là Chrome đã chặn), hiện nút thủ công
+            setTimeout(function() {
+                document.getElementById("mainSubtitle").innerHTML = 
+                    "It seems your browser didn't open the app automatically. <br><br> Please click the button below to continue.";
+                
+                var btn = document.getElementById("btnOpenApp");
+                btn.href = fallbackUrl;
+                btn.style.display = "inline-block";
+            }, 2500);
+        } else {
+            document.getElementById("mainTitle").innerText = "Oops!";
+            document.getElementById("mainSubtitle").innerText = "No authentication token found. Please try logging in again from the app.";
+        }
+    };
+  </script>
 </body>
 </html>
