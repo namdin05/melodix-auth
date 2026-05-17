@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Melodix – Verification Successful</title>
+  <style>
+    /* ── Reset & base ── */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html, body {
+      height: 100%;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+                   'Helvetica Neue', Arial, sans-serif;
+      background-color: #121212;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 24px;
+    }
+
+    /* ── Card ── */
+    .card {
+      background-color: #181818;
+      border: 1px solid #282828;
+      border-radius: 20px;
+      padding: 56px 48px;
+      max-width: 480px;
+      width: 100%;
+      text-align: center;
+      box-shadow: 0 8px 40px rgba(0, 0, 0, 0.6);
+    }
+
+    /* ── App brand ── */
+    .brand {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 40px;
+    }
+
+    .brand-icon {
+      width: 36px;
+      height: 36px;
+      flex-shrink: 0;
+    }
+
+    .brand-name {
+      font-size: 1.4rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      color: #1DB954;
+    }
+
+    /* ── Animated checkmark ── */
+    .checkmark-wrapper {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 32px;
+    }
+
+    .checkmark-circle {
+      width: 96px;
+      height: 96px;
+    }
+
+    /* Circle stroke draw-on animation */
+    .circle-path {
+      fill: none;
+      stroke: #1DB954;
+      stroke-width: 3;
+      stroke-dasharray: 283;
+      stroke-dashoffset: 283;
+      stroke-linecap: round;
+      animation: drawCircle 0.7s ease-out 0.1s forwards;
+    }
+
+    /* Checkmark stroke draw-on animation */
+    .check-path {
+      fill: none;
+      stroke: #ffffff;
+      stroke-width: 4;
+      stroke-dasharray: 60;
+      stroke-dashoffset: 60;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      animation: drawCheck 0.45s ease-out 0.75s forwards;
+    }
+
+    @keyframes drawCircle {
+      to { stroke-dashoffset: 0; }
+    }
+
+    @keyframes drawCheck {
+      to { stroke-dashoffset: 0; }
+    }
+
+    /* Glow pulse after both strokes finish */
+    .checkmark-circle {
+      animation: glow 2s ease-in-out 1.4s infinite alternate;
+      filter: drop-shadow(0 0 0px #1DB954);
+    }
+
+    @keyframes glow {
+      from { filter: drop-shadow(0 0 4px #1DB95466); }
+      to   { filter: drop-shadow(0 0 18px #1DB95499); }
+    }
+
+    /* ── Typography ── */
+    .title {
+      font-size: 1.65rem;
+      font-weight: 700;
+      color: #ffffff;
+      letter-spacing: -0.01em;
+      margin-bottom: 16px;
+      opacity: 0;
+      transform: translateY(10px);
+      animation: fadeUp 0.5s ease-out 0.7s both;
+    }
+
+    .subtitle {
+      font-size: 0.95rem;
+      line-height: 1.65;
+      color: #b3b3b3;
+      opacity: 0;
+      transform: translateY(10px);
+      animation: fadeUp 0.5s ease-out 0.9s both;
+    }
+
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* ── Divider ── */
+    .divider {
+      width: 48px;
+      height: 3px;
+      border-radius: 2px;
+      background: #1DB954;
+      margin: 28px auto;
+      opacity: 0;
+      animation: fadeUp 0.5s ease-out 1.1s both;
+    }
+
+    /* ── Footer note ── */
+    .footer-note {
+      font-size: 0.78rem;
+      color: #535353;
+      opacity: 0;
+      animation: fadeUp 0.5s ease-out 1.2s both;
+    }
+
+    /* ── Fallback Button (THÊM MỚI) ── */
+    .fallback-btn {
+      display: none; /* Ẩn mặc định, chỉ hiện khi JS gọi */
+      background-color: #1DB954;
+      color: #000000;
+      text-decoration: none;
+      font-weight: bold;
+      padding: 14px 32px;
+      border-radius: 30px;
+      margin-top: 24px;
+      font-size: 1rem;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+      animation: fadeUp 0.5s ease-out both;
+    }
+    .fallback-btn:hover {
+      background-color: #1ed760;
+      transform: scale(1.05);
+    }
+
+    /* ── Accessibility: respect reduced-motion preference ── */
+    @media (prefers-reduced-motion: reduce) {
+      .title,
+      .subtitle,
+      .divider,
+      .footer-note,
+      .fallback-btn {
+        opacity: 1;
+        transform: none;
+        animation: none;
+      }
+
+      .circle-path {
+        stroke-dashoffset: 0;
+        animation: none;
+      }
+
+      .check-path {
+        stroke-dashoffset: 0;
+        animation: none;
+      }
+
+      .checkmark-circle {
+        animation: none;
+        filter: drop-shadow(0 0 8px #1DB95488);
+      }
+    }
+
+    /* ── Mobile tweaks ── */
+    @media (max-width: 480px) {
+      .card {
+        padding: 40px 28px;
+        border-radius: 16px;
+      }
+
+      .title {
+        font-size: 1.4rem;
+      }
+
+      .checkmark-circle {
+        width: 80px;
+        height: 80px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="card" role="main">
+
+    <div class="brand" aria-label="Melodix">
+      <svg class="brand-icon" viewBox="0 0 36 36" fill="none" aria-hidden="true"
+           xmlns="http://www.w3.org/2000/svg">
+        <rect width="36" height="36" rx="10" fill="#158a3e"/>
+        <path d="M24 10v10.5A3.5 3.5 0 1 1 20.5 17H22V11l-8 2v11A3.5 3.5 0 1 1 10.5 21H12V10l12-3v3Z"
+              fill="#1DB954"/>
+      </svg>
+      <span class="brand-name">Melodix</span>
+    </div>
+
+    <div class="checkmark-wrapper" aria-hidden="true">
+      <svg class="checkmark-circle" viewBox="0 0 100 100"
+           xmlns="http://www.w3.org/2000/svg">
+        <circle cx="50" cy="50" r="45" fill="#1DB95422"/>
+        <circle class="circle-path" cx="50" cy="50" r="45"
+                transform="rotate(-90 50 50)"/>
+        <polyline class="check-path" points="28,52 43,67 72,35"/>
+      </svg>
+    </div>
+
+    <h1 class="title" id="mainTitle">Verification Successful!</h1>
+
+    <p class="subtitle" id="mainSubtitle">
+      Authenticating your session... Please wait a moment while we return you to the&nbsp;<strong style="color:#1DB954;">Melodix</strong>&nbsp;app.
+    </p>
+
+    <a href="#" id="btnOpenApp" class="fallback-btn">Open Melodix App</a>
+
+    <div class="divider" role="presentation"></div>
+
+    <p class="footer-note">© 2026 Melodix. All rights reserved.</p>
+  </main>
+
+  <script>
+    window.onload = function() {
+        // Lấy Hash (#) và Query (?) do Supabase trả về
+        var hash = window.location.hash; 
+        var search = window.location.search; 
+
+        if (hash || search) {
+            // Tạo link Custom Scheme dự phòng đá về app (khớp với Manifest của bạn)
+            var fallbackUrl = "melodix://auth" + search + hash;
+
+            // 1. NGAY LẬP TỨC cố gắng ép điện thoại mở app lên
+            window.location.href = fallbackUrl;
+
+            // 2. Chờ 2.5 giây. Nếu web chưa bị đóng (nghĩa là Chrome đã chặn), hiện nút thủ công
+            setTimeout(function() {
+                document.getElementById("mainSubtitle").innerHTML = 
+                    "It seems your browser didn't open the app automatically. <br><br> Please click the button below to continue.";
+                
+                var btn = document.getElementById("btnOpenApp");
+                btn.href = fallbackUrl;
+                btn.style.display = "inline-block";
+            }, 2500);
+        } else {
+            document.getElementById("mainTitle").innerText = "Oops!";
+            document.getElementById("mainSubtitle").innerText = "No authentication token found. Please try logging in again from the app.";
+        }
+    };
+  </script>
+</body>
+</html>
